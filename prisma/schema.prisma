@@ -58,7 +58,7 @@ model User {
 model Subreddit {
   id          String         @id @default(cuid())
   name        String         @unique
-  createAt    DateTime       @default(now())
+  createdAt   DateTime       @default(now())
   updateAt    DateTime       @updatedAt
   posts       Post[]
   creatorId   String?
@@ -89,7 +89,7 @@ model Post {
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String
   comments    Comment[]
-  votes        Vote[]
+  votes       Vote[]
 }
 
 model Comment {
@@ -117,7 +117,7 @@ model Vote {
   userId String
   post   Post     @relation(fields: [postId], references: [id])
   postId String
-  tyoe   VoteType
+  type   VoteType
 
   @@id([userId, postId])
 }

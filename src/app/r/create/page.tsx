@@ -82,7 +82,7 @@ const Page = () => {
                         disabled={input.length === 0}
                         onClick={() => createCommunity()}
                     >
-                        Craete Community
+                        Create Community
                     </Button>
                 </div>
             </div>
