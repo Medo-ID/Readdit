@@ -3,12 +3,13 @@ import { db } from "@/lib/db"
 import { redis } from "@/lib/redis"
 import { PostVoteValidator } from "@/lib/validators/vote"
 import { CachedPost } from "@/types/redis"
+import { z } from "zod"
 
 const CACHE_AFTER_UPVOTES = 1
 
 export async function PATCH(req: Request) {
     try{
-        const body = req.json()
+        const body = await req.json()
         const { postId, voteType } = PostVoteValidator.parse(body)
         const session = await getAuthSession()
 
@@ -66,7 +67,7 @@ export async function PATCH(req: Request) {
             // recount the votes
             const votesAmount = post.votes.reduce((accumulator, vote) => {
                 if(vote.type === 'UP') return accumulator + 1
-                if(vote.type === 'DOWN') return accumulator -1
+                if(vote.type === 'DOWN') return accumulator - 1
                 return accumulator
             }, 0)
 
@@ -117,8 +118,13 @@ export async function PATCH(req: Request) {
         }
 
         return new Response('OK')
-    }
-    catch(error){
-
+    
+    
+    }catch(error){
+        if (error instanceof z.ZodError) {
+            return new Response('Invalid request data passed', { status: 422 })
+          }
+      
+          return new Response('Could not register your vote, please try again later', { status: 500 })
     }
 }
