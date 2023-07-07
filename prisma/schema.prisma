@@ -100,9 +100,9 @@ model Comment {
   authorId   String
   post       Post          @relation(fields: [postId], references: [id])
   postId     String
-  replayToId String?
-  replayTo   Comment?      @relation("ReplayTo", fields: [replayToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replies    Comment[]     @relation("ReplayTo")
+  replyToId String?
+  replyTo   Comment?      @relation("replyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies    Comment[]     @relation("replyTo")
   votes      CommentVote[]
   commnetId  String?
 }
