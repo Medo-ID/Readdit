@@ -1,14 +1,22 @@
 'use client'
 
-import { FC, useRef } from 'react'
+import { FC, useRef, useState } from 'react'
 import UserAvatar from './UserAvatar'
 import { Comment, CommentVote, User } from '@prisma/client'
 import { formatTimeToNow } from '@/lib/utils'
 import { Button } from './ui/Button'
-import CommentVotes from './CommentVotes'
+
 import { MessageSquare } from 'lucide-react'
 import { Textarea } from './ui/Textarea'
 import { Label } from './ui/Label'
+import CommentVotes from './CommentVotes'
+import { useOnClickOutside } from '@/hooks/use-on-click-outside'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { toast } from '@/hooks/use-toast'
+import axios from 'axios'
+import { CommentRequest } from '@/lib/validators/comment'
+import { useMutation } from '@tanstack/react-query'
 
 type ExtendedComment = Comment & {
     votes: CommentVote[]
@@ -17,10 +25,42 @@ type ExtendedComment = Comment & {
 
 interface PostCommentProps {
     comment: ExtendedComment
+    votesAmount: number
+    currentVote: CommentVote | undefined
+    postId: string
 }
 
-const PostComment: FC<PostCommentProps> = ({comment}) => {
+const PostComment: FC<PostCommentProps> = ({comment, votesAmount, currentVote, postId}) => {
+  
   const commentRef = useRef<HTMLDivElement>(null)
+  const { data: session } = useSession()
+  const [isReplying, setIsReplying] = useState<boolean>(false)
+  const [input, setInput] = useState<string>(`@${comment.author.username} `)
+  const router = useRouter()
+  useOnClickOutside(commentRef, () => {
+    setIsReplying(false)
+  })
+
+  const { mutate: postComment, isLoading } = useMutation({
+    mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
+      const payload: CommentRequest = { postId, text, replyToId }
+
+      const { data } = await axios.patch(`/api/subreddit/post/comment/`, payload)
+      return data
+    },
+
+    onError: () => {
+      return toast({
+        title: 'Something went wrong.',
+        description: "Comment wasn't created successfully. Please try again.",
+        variant: 'destructive',
+      })
+    },
+    onSuccess: () => {
+      router.refresh()
+      setIsReplying(false)
+    },
+  })
   
   return (
     <div ref={commentRef} className='flex flex-col'>
@@ -43,11 +83,11 @@ const PostComment: FC<PostCommentProps> = ({comment}) => {
         </div>
       </div>
       <p className='text-sm text-zinc-900 mt-2'>{comment.text}</p>
-  {/* <div className='flex gap-2 items-center'>
+  <div className='flex gap-2 items-center'>
         <CommentVotes
           commentId={comment.id}
-          votesAmount={votesAmount}
-          currentVote={currentVote}
+          initialVotesAmount={votesAmount}
+          initialVote={currentVote}
         />
 
         <Button
@@ -84,13 +124,14 @@ const PostComment: FC<PostCommentProps> = ({comment}) => {
                   Cancel
                 </Button>
                 <Button
+                  disabled={input.length === 0}
                   isLoading={isLoading}
                   onClick={() => {
                     if (!input) return
                     postComment({
                       postId,
                       text: input,
-                      replyToId: comment.replyToId ?? comment.id, // default to top-level comment
+                      replyToId: comment.replyToId ?? comment.id
                     })
                   }}>
                   Post
@@ -98,7 +139,7 @@ const PostComment: FC<PostCommentProps> = ({comment}) => {
               </div>
             </div>
             </div>
-          ) : null} */}
+          ) : null}
     </div>
   )
 }

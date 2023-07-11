@@ -13,22 +13,20 @@ import { FC, useState } from 'react'
 
 interface CommentVotesProps {
   commentId: string
-  votesAmount: number
-  currentVote?: PartialVote
+  initialVotesAmount: number
+  initialVote?: PartialVote
 }
 
 type PartialVote = Pick<CommentVote, 'type'>
 
 const CommentVotes: FC<CommentVotesProps> = ({
   commentId,
-  votesAmount: _votesAmount,
-  currentVote: _currentVote,
+  initialVotesAmount,
+  initialVote,
 }) => {
   const { loginToast } = useCustomToast()
-  const [votesAmount, setvotesAmount] = useState<number>(_votesAmount)
-  const [currentVote, setCurrentVote] = useState<PartialVote | undefined>(
-    _currentVote
-  )
+  const [votesAmount, setvotesAmount] = useState<number>(initialVotesAmount)
+  const [currentVote, setCurrentVote] = useState<PartialVote | undefined>(initialVote)
   const prevVote = usePrevious(currentVote)
 
   const { mutate: vote } = useMutation({
