@@ -40,7 +40,7 @@ const Post: FC<PostProps> = ({subredditName, post, commentAmount, votesAmount: v
                                 <span className='px-1'>•</span>
                             </>
                         ) : null}
-                        <span className='mr-2'>Posted by u/{post.author.name}</span>
+                        <span className='mr-2'>Posted by u/{post.author.username}</span>
                         <span className='flex'>{formatTimeToNow(new Date(post.createdAt))}</span>
                     </div>
                     <a
