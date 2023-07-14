@@ -75,7 +75,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({postId, initialVoteAmount, ini
             <Button onClick={() => vote('UP')} size='sm' variant='ghost' aria-label='upvote'>
                 <ArrowBigUp 
                     className={cn('h-5 w-5 text-zinc-700', {
-                        'text-emerald-500 fill-emerald-500': currentVote === 'UP'
+                        'text-[#03A9F4] fill-[#03A9F4]': currentVote === 'UP'
                     })}
                 />
             </Button>
@@ -84,7 +84,7 @@ const PostVoteClient: FC<PostVoteClientProps> = ({postId, initialVoteAmount, ini
             <Button onClick={() => vote('DOWN')} size='sm' variant='ghost' aria-label='downvote'>
                 <ArrowBigDown 
                     className={cn('h-5 w-5 text-zinc-700', {
-                        'text-red-500 fill-red-500': currentVote === 'DOWN'
+                        'text-[#D84315] fill-[#D84315]': currentVote === 'DOWN'
                     })}
                 />
             </Button>

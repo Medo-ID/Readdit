@@ -26,7 +26,8 @@ export default function RootLayout({
         'bg-white text-slate-900 antialiased light',
         inter.className)
       }>
-      <body className='min-h-screen bg-slate-50 antialiased'>
+      <link rel="shortcut icon" href="favicon.ico" />
+      <body className='min-h-screen bg-[#CFD8DC] antialiased'>
         <Providers>
           {/* @ts-expect-error server component */}
           <Navbar />

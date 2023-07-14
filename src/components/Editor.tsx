@@ -174,7 +174,7 @@ const Editor: FC<EditorProps> = ({subredditId}) => {
     const {ref: titleRef, ...rest} = register('title')
     
     return (
-        <div className='w-full p-4 g-zinc-50 rounded-lg order order-zinc-200'>
+        <div className='w-full p-4 g-zinc-50 rounded-lg order order-zinc-200 border border-white'>
             <form 
                 id='subreddit-post-form'
                 className='w-fit'

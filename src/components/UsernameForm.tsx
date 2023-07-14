@@ -71,7 +71,7 @@ const UsernameForm: FC<UsernameFormProps> = ({user}) => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className='relative grid gap-1'>
+                    <div className='relative grid gap-2'>
                         <div className='absolute top-0 left-0 w-8 h-10 grid place-items-center'>
                             <span className='text-sm text-zinc-400'>u/</span>
                         </div>

@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/Button"
 import { getAuthSession } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { format } from "date-fns"
+import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -46,7 +47,7 @@ const Layout = async ({children, params: {slug}}: {children: React.ReactNode, pa
     return (
         <div className="sm:container max-w-7xl mx-auto h-full pt-12">
             <div>
-                
+            <Link href='/' className='flex items-center justify-start'><ChevronLeft className='w-4 h-4 text-zinc-700'/><p className='text-sm text-zinc-700 underline underline-offset-2'>Back Home</p></Link>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-6">
                     <ul className="flex flex-col col-span-2 space-y-6">{children}</ul>
                     <div className="hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last">
@@ -80,7 +81,7 @@ const Layout = async ({children, params: {slug}}: {children: React.ReactNode, pa
                             <Link 
                                 href={`r/${slug}/submit`}
                                 className={buttonVariants({
-                                    variant: 'outline',
+                                    // variant: 'outline',
                                     className: 'w-full mb-6'
                                 })}
                             >

@@ -63,7 +63,7 @@ const Post: FC<PostProps> = ({subredditName, post, commentAmount, votesAmount: v
                     </div>
                 </div>
             </div>
-            <div className='bg-gray-50 z-20 text-sm p-4 sm:px-6'>
+            <div className='bg-[#ECEFF1] rounded-md z-20 text-sm p-4 sm:px-6 border-t border-mainColor'>
                 <a
                     href={`/r/${subredditName}/post/${post.id}`}
                     className='w-fit flex items-center gap-2 '
