@@ -25,7 +25,7 @@ const CommentVotes: FC<CommentVotesProps> = ({
   initialVote,
 }) => {
   const { loginToast } = useCustomToast()
-  const [votesAmount, setvotesAmount] = useState<number>(initialVotesAmount)
+  const [votesAmount, setVotesAmount] = useState<number>(initialVotesAmount)
   const [currentVote, setCurrentVote] = useState<PartialVote | undefined>(initialVote)
   const prevVote = usePrevious(currentVote)
 
@@ -39,8 +39,8 @@ const CommentVotes: FC<CommentVotesProps> = ({
       await axios.patch('/api/subreddit/post/comment/vote', payload)
     },
     onError: (err, voteType) => {
-      if (voteType === 'UP') setvotesAmount((prev) => prev - 1)
-      else setvotesAmount((prev) => prev + 1)
+      if (voteType === 'UP') setVotesAmount((prev) => prev - 1)
+      else setVotesAmount((prev) => prev + 1)
 
       // reset current vote
       setCurrentVote(prevVote)
@@ -61,14 +61,14 @@ const CommentVotes: FC<CommentVotesProps> = ({
       if (currentVote?.type === type) {
         // User is voting the same way again, so remove their vote
         setCurrentVote(undefined)
-        if (type === 'UP') setvotesAmount((prev) => prev - 1)
-        else if (type === 'DOWN') setvotesAmount((prev) => prev + 1)
+        if (type === 'UP') setVotesAmount((prev) => prev - 1)
+        else if (type === 'DOWN') setVotesAmount((prev) => prev + 1)
       } else {
         // User is voting in the opposite direction, so subtract 2
         setCurrentVote({ type })
-        if (type === 'UP') setvotesAmount((prev) => prev + (currentVote ? 2 : 1))
+        if (type === 'UP') setVotesAmount((prev) => prev + (currentVote ? 2 : 1))
         else if (type === 'DOWN')
-          setvotesAmount((prev) => prev - (currentVote ? 2 : 1))
+          setVotesAmount((prev) => prev - (currentVote ? 2 : 1))
       }
     },
   })
